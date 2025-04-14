@@ -1,20 +1,20 @@
-#include "Table.h"
+#include "Board.h"
 
-Table::Table() {
+Board::Board() {
     for (int i = 0; i < 9; i++) {
         for (int j = 0; j < 9; j++) {
             block[i][j] = "";
         }
     } 
 }
-Table::Table(string arr[9][9]) {
+Board::Board(string arr[9][9]) {
     for (int i = 0; i < 9; i++) {
         for (int j = 0; j < 9; j++) {
             block[i][j] = arr[i][j];
         }
     } 
 }
-void Table::solve() {
+void Board::solve() {
     // iterating over left top cells of 3x3 blocks
     for (int i = 0; i < 9; i+=3) {
         for (int j = 0; j < 9; j+=3) {
@@ -38,16 +38,16 @@ void Table::solve() {
         }
     }
 }
-bool Table::check_touching() {
+bool Board::check_touching() {
     return true;
 }
-bool Table::check_repetitions() {
+bool Board::check_repetitions() {
     return true;
 }
-bool Table::check_space() {
+bool Board::check_space() {
     return true;
 }
-bool Table::check() {
+bool Board::check() {
     if (!check_touching()) {
         cout << "!check_touching()\n";
         return false;
@@ -60,8 +60,8 @@ bool Table::check() {
     }
     return true;
 }
-// print the table with separate 3x3 blocks
-void Table::print() {
+// print the board with separate 3x3 blocks
+void Board::print() {
     for (int i = 0; i < 9; i++) {
         if ((i%3)==0 && i!=0 && i!=8) {
             cout << "\033[1m├───┼───┼───┼───┼───┼───┼───┼───┼───┤\n";

@@ -4,11 +4,11 @@
 #include <iostream>
 using namespace std;
 
-class Table {
+class Board {
     string block[9][9];
 public:
-    Table();
-    Table(string arr[9][9]);
+    Board();
+    Board(string arr[9][9]);
     void solve();
     bool check_touching(); // checks whether shaded cells are touching. If they're not - returns true
     bool check_repetitions(); // checks repetitions of numbers in rows, columns and 3x3 blocks

@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Table.h"
+#include "Board.h"
 using namespace std;
 
 int main() {
@@ -14,10 +14,10 @@ int main() {
         {"2", "2", "3", "5", "4", "3", "6", "5", "1"},
         {"4", "6", "8", "7", "1", "9", "7", "3", "2"}
     };
-    Table t(block);
-    t.print();
-    t.solve();
+    Board board(block);
+    board.print();
+    board.solve();
     cout << endl;
-    t.print();
+    board.print();
     return 0;
 }
