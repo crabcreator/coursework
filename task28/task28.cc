@@ -17,7 +17,6 @@ int main() {
     Board board(block);
     board.print();
     board.solve();
-    cout << endl;
     board.print();
     return 0;
 }

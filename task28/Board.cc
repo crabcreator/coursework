@@ -74,7 +74,6 @@ void Board::solve() {
     for (int i = 0; i < 9; i++) {
         for (int j = 0; j < 9; j++) {
             if(is_trapped(i, j)) {
-                cout << "\033[38;5;196mCell [" << i << "][" << j << "] is trapped!\033[0m\n";
                 bool sides[4]{false}; // which sides can be reshaded.
                 if (i == 0) {
                     if (block[i+1][j].length() > 1) sides[BOTTOM] = true;
@@ -94,23 +93,16 @@ void Board::solve() {
                 }
                 bool reshaded = false;
                 if (sides[LEFT]) {
-                    cell.clear(); // clear old vector elements
                     reshaded = reshade(i, j-1);
                 }
                 if (!reshaded && sides[TOP]) {
-                    cell.clear();
                     reshaded = reshade(i-1, j);
                 }
                 if (!reshaded && sides[RIGHT]) {
-                    cell.clear();
                     reshaded = reshade(i, j+1);
                 }
                 if (!reshaded && sides[BOTTOM]) {
-                    cell.clear();
                     reshaded = reshade(i+1, j);
-                }
-                if (!reshaded) {
-                    cout << "\033[38;5;196mCannot reshade cells around cell [" << i << "][" << j << "]\033[0m\n";
                 }
             }
         }
@@ -249,12 +241,12 @@ bool Board::reshade(int row, int col) {
         } else {
             if (is_trapped(row, col+1, LEFT) || is_trapped(row, col-1, RIGHT)) can_reshade = false;
         }
-        // 2. If we cannot unshade this cell, search recursively for cell that can be unshaded
+        // 2. If we cannot unshade this cell directly, search recursively for cell that can be unshaded
         if (can_reshade) {
             block[row][col] += '#';
             return true;
         } else {
-            // 1 check whether we can reshade "neighbours"
+            // check whether we can reshade "neighbours"
             if (row == 0) {
                 if (block[row+1][col].length() > 1) {
                     if (reshade(row+1, col) && !has_neighbours(row, col)) {
@@ -271,15 +263,9 @@ bool Board::reshade(int row, int col) {
                 }
             } else {
                 if (block[row+1][col].length() > 1) {
-                    if(row+1 == 4 && col == 7) {
-                        cout << "\033[38;5;208mreshading 4 7\033[0m\n";
-                    }
                     if (reshade(row+1, col) && !has_neighbours(row, col)) {
                         block[row][col] += '#';
                         return true;
-                    }
-                    if(row+1 == 4 && col == 7) {
-                        cout << "\033[38;5;208mcannot reshade 4 7\033[0m\n";
                     }
                 }
                 if (block[row-1][col].length() > 1) {
@@ -317,56 +303,27 @@ bool Board::reshade(int row, int col) {
                     }
                 }
             }
-            // reshade cells with the same number
-            for (int j = 0; j < 9; j++) {
-                if (j != col && block[row][col][0] == block[row][j][0] && !contains({row, j}) && block[row][j].length() > 1) {
-                    if (reshade(row, j) && !has_neighbours(row, col)) {
-                        block[row][col] += '#';
-                        return true;
-                    }
-                }
-            }
-            for (int i = 0; i < 9; i++) {
-                if (i != row && block[row][col][0] == block[i][col][0] && !contains({i, col}) && block[i][col].length() > 1) {
-                    if (reshade(i, col) && !has_neighbours(row, col)) {
-                        block[row][col] += '#';
-                        return true;
-                    }
-                }
-            }
         }
     } else { // cell is shaded. We must UNSHADE this cell
         // check row
-        // bool can_reshade = false;
         for (int j = 0; j < 9; j++) {
-            if (j != col && block[row][col][0] == block[row][j][0] && !contains({row, j}) && block[row][j].length() == 1) {
+            if (j != col && block[row][col][0] == block[row][j][0] && block[row][j].length() == 1) {
                 if (!reshade(row, j) || area_has_num(row, col)) {
                     return false;
-                } else if (row == 2 && col == 6) {
-                    cout << "                 cell 2 6 тіпа can be rashaded\n";
                 }
             }
         }
         // check column
         for (int i = 0; i < 9; i++) {
-            if (i != row && block[row][col][0] == block[i][col][0] && !contains({i, col}) && block[i][col].length() == 1) {
+            if (i != row && block[row][col][0] == block[i][col][0]  && block[i][col].length() == 1) {
                 if (reshade(i, col) && !area_has_num(row, col)) {
-                    if (i == 8 && col == 6) {
-                        cout << "\033[38;5;208mCELL " << i << " " << col << " (" << block[row][col] << ") is reshaded\033[0m\n";
-                    }
                     block[row][col].pop_back();
-                    if (row == 2 && col == 6) {
-                        cout << "                 cell 2 6 тіпа is rashaded\n";
-                    }
                     return true;
                 } else return false;
             }
         }
         // check 3x3 area
         if (area_has_num(row, col)) {
-            if (row == 8 && col == 0) {
-                cout << "\033[38;5;208m\n2 CELL 8 0\033[0m\n";
-            }
             int area = get_area(row, col);
             int count = 0;
             for (int i = 0; i < 9; i+=3) {
@@ -385,9 +342,6 @@ bool Board::reshade(int row, int col) {
                     }
                 }
             }
-        }
-        if (row == 8 && col == 6) {
-            cout << "\033[38;5;208mCELL " << row << " " << col << " (" << block[row][col] << ") is popped back\033[0m\n";
         }
         block[row][col].pop_back();
         return true;
@@ -505,9 +459,11 @@ bool Board::check(int out) {
             }
         }
     }
+    if (!error) {
+        cout << "\033[38;5;118mSolved!\033[0m\n";
+    }
     return !error;
 }
-// print the board with separate 3x3 blocks
 void Board::print() {
     for (int i = 0; i < 9; i++) {
         if ((i%3)==0 && i!=0 && i!=8) {
