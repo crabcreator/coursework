@@ -73,11 +73,11 @@ void Board::solve() {
     // check for "trapped" non-shaded cells
     for (int i = 0; i < 9; i++) {
         for (int j = 0; j < 9; j++) {
-            if(is_trapped(i, j)) {
+            if (is_trapped(i, j)) {
                 bool sides[4]{false}; // which sides can be reshaded.
                 if (i == 0) {
                     if (block[i+1][j].length() > 1) sides[BOTTOM] = true;
-                }  else if (i == 8) {
+                } else if (i == 8) {
                     if (block[i-1][j].length() > 1) sides[TOP] = true;
                 } else {
                     if (block[i+1][j].length() > 1) sides[BOTTOM] = true;
@@ -139,7 +139,7 @@ bool Board::has_neighbours(int row, int col) {
     return false;
 }
 bool Board::is_trapped(int row, int col, int side) {
-    if(block[row][col].length() == 1) {
+    if (block[row][col].length() == 1) {
         // first - check is this cell is trapped directly
         bool shaded[] = {false, false, false, false}; // array that represents 4 sides around the cell
         if (row == 0) {
@@ -358,7 +358,7 @@ bool Board::area_has_num(int row, int col) {
             if (count == area) {
                 for (int k = i; k-i < 3; k++) {
                     for (int l = j; l-j < 3; l++) {
-                        if(k != row && l != col && block[k][l][0] == num && block[k][l].length() == 1) {
+                        if (k != row && l != col && block[k][l][0] == num && block[k][l].length() == 1) {
                             return true;
                         }
                     }
@@ -412,6 +412,12 @@ bool Board::check(int out) {
         for (int j = 0; j < 9; j+=3) {
             for (int row = i; row-i < 3; row++) {
                 for (int col = j; col-j < 3; col++) {
+                    if (block[row][col].length()>1 && has_neighbours(row, col)) {
+                        if (out) {
+                            cout << "\033[38;5;196mError in row " << row << " column " << col << " with number " << block[row][col] << " (touches other cell(s))\033[0m\n";
+                        }
+                        error = true;
+                    }
                     if (is_trapped(row, col)) {
                         if (out) {
                             cout << "\033[38;5;196mError in row " << row << " column " << col << " with number " << block[row][col] << " (trapped)\033[0m\n";
