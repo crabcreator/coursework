@@ -33,6 +33,8 @@ void Board::solve() {
                                     } else {
                                         block[row][col] += '#';
                                     }
+                                    this_thread::sleep_for(1000ms);
+                                    print();
                                 }
                             }
                         }
@@ -53,6 +55,8 @@ void Board::solve() {
                         } else {
                             block[i][j] += '#';
                         }
+                        this_thread::sleep_for(1000ms);
+                        print();
                     }
                 }
             }
@@ -65,6 +69,8 @@ void Board::solve() {
                         } else {
                             block[i][j] += '#';
                         }
+                        this_thread::sleep_for(1000ms);
+                        print();
                     }
                 }
             }
@@ -104,6 +110,8 @@ void Board::solve() {
                 if (!reshaded && sides[BOTTOM]) {
                     reshaded = reshade(i+1, j);
                 }
+                this_thread::sleep_for(1000ms);
+                print();
             }
         }
     }

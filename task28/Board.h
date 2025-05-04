@@ -2,7 +2,10 @@
 #define TABLE_H
 
 #include <iostream>
+#include <cstring>
 #include <vector>
+#include <thread>
+#include <chrono>
 using namespace std;
 
 typedef struct Cell Cell;

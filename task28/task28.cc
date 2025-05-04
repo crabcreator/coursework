@@ -14,16 +14,45 @@ int main() {
         {"2", "2", "3", "5", "4", "3", "6", "5", "1"},
         {"4", "6", "8", "7", "1", "9", "7", "3", "2"}
     };
-    Board board(block);
-    board.print();
+    Board temp(block);
+    temp.print();
     char answer[10];
     bool running = true;
-    while(running) {
+    cout << "Choose an option:\n";
+    cout << "1 - enter board from keyboard\t2 - keep prepared board\n";
+    cin >> answer;
+    cin.ignore();
+    if (strcmp(answer, "1")==0) {
+        char line[50];
+        char c;
+        cout << "Enter one row of 9 digits per line (e.g '123456789')\n";
+        for (int i = 0; i < 9; i++) {
+            cout << "Enter row #" << i+1 << ":\n";
+            cin.getline(line, 50);
+            if (strlen(line) == 9) {
+                for (int j = 0; j < 9; j++) {
+                    c = line[j];
+                    if ((int)(c-'0') < 1 || (int)(c-'0') > 9) {
+                        cout << "Number in cell must be in range 1-9\n";
+                        i--; // fill the row again
+                        break;
+                    } else {
+                        block[i][j] = c;
+                    }
+                }
+            } else {
+                cout << "Line must contain 9 digits\n";
+                i--;
+            }
+        }
+    }
+    Board board(block);
+    while (running) {
         cout << "Choose an option:\n";
         cout << "1 - solve it yourself\t2 - solve with computer\n3 - exit\n";
         cin >> answer;
         int option = atoi(answer);
-        switch(option) {
+        switch (option) {
             case 1:
                 board.solve_user();
                 board.print();
