@@ -16,7 +16,32 @@ int main() {
     };
     Board board(block);
     board.print();
-    board.solve();
-    board.print();
+    char answer[10];
+    bool running = true;
+    while(running) {
+        cout << "Choose an option:\n";
+        cout << "1 - solve it yourself\t2 - solve with computer\n3 - exit\n";
+        cin >> answer;
+        int option = atoi(answer);
+        switch(option) {
+            case 1:
+                board.solve_user();
+                board.print();
+                running = false;
+                break;
+            case 2:
+                board.solve();
+                board.print();
+                running = false;
+                break;
+            case 3:
+                cout << "Bye!\n";
+                running = false;
+                break;
+            default:
+                cout << "Unknown option '" << answer << "'\n";
+        }
+        cin.ignore();
+    }
     return 0;
 }

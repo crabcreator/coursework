@@ -496,3 +496,37 @@ void Board::print() {
     }
     cout << "\033[1m└───┴───┴───┴───┴───┴───┴───┴───┴───┘\033[0m\n";
 }
+
+void Board::solve_user() {
+    bool solved = false;
+    string cell;
+    int row, col;
+    system("clear");
+    while(!solved) {
+        print();
+        if(!check()) {
+            cout << "Not solved\n";
+            cout << "Enter cell you want to shade/unshade (example: '11') (e - to exit):\n";
+            cin >> cell;
+            if(cell == "e") {
+                cout << "Bye!\n";
+                break;
+            }
+            row = cell[0]-'0';
+            col = cell[1]-'0';
+            if(row < 1 || row > 9 || col < 1 || col > 9) {
+                cout << "row and column values must be in range 1-9\n";
+            } else {
+                if(block[row-1][col-1].length() > 1) {
+                    block[row-1][col-1].pop_back();
+                } else {
+                    block[row-1][col-1] += "#";
+                }
+                system("clear");
+            }
+        } else {
+            solved = true;
+            break;
+        }
+    }
+}

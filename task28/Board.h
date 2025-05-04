@@ -34,5 +34,6 @@ public:
     void solve();
     bool check(int out=0); // checks all of the parameters. out - default argument (whether to print errors)
     void print();
+    void solve_user(); // with user input
 };
 #endif
